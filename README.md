@@ -1,8 +1,11 @@
 Objetivo:
+
 	Desarrollar una aplicación de escritorio con interfaz gráfica utilizando Python y MongoDB para gestionar datos. 
- 	La aplicación debe permitir al usuario realizar operaciones de CRUD (Crear, Leer, Actualizar, Eliminar) sobre una colección de datos almacenada en una base de datos MongoDB.
+ 	La aplicación debe permitir al usuario realizar operaciones de CRUD (Crear, Leer, Actualizar, Eliminar) 
+	sobre una colección de datos almacenada en una base de datos MongoDB.
 
 Requerimientos:
+
 	1. Operaciones:
 		a. Crear: Permitir al usuario añadir nuevos registros a la base de datos.
 		b. Leer: Visualizar los registros existentes.
@@ -23,6 +26,7 @@ Requerimientos:
 			ii. Botón para guardar los cambios.
 
 Reporte:
+
 	1. Portada con título y nombres de los estudiantes.
 	2. Resumen. Breve descripción del proyecto y sus objetivos.
 	3. Metodología. Descripción detallada de los pasos seguidos para la realización del proyecto y las tecnologías utilizadas.
