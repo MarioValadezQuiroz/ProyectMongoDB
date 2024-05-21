@@ -25,6 +25,7 @@ root.geometry("400x400")
 def crear_registro():
     def guardar_datos():
         nombre = entry_nombre.get()
+        apellido = entry_apellido.get()
         edad = entry_edad.get()
         sexo = entry_sexo.get()
 
@@ -33,7 +34,11 @@ def crear_registro():
         # Usar una transacción para guardar los datos
         with client.start_session() as session:
             with session.start_transaction():
-                collection.insert_one({"nombre": nombre, "edad": edad, "sexo": sexo}, session=session)
+                collection.insert_one({"nombre": nombre,
+                                       "apellido": apellido,
+                                       "edad": edad,
+                                       "sexo": sexo},
+                                      session=session)
 
         messagebox.showinfo("Información", "Registro creado exitosamente")
 
@@ -44,6 +49,10 @@ def crear_registro():
     tk.Label(crear_ventana, text="Nombre").pack()
     entry_nombre = tk.Entry(crear_ventana)
     entry_nombre.pack()
+
+    tk.Label(crear_ventana, text="Apellido").pack()
+    entry_apellido = tk.Entry(crear_ventana)
+    entry_apellido.pack()
 
     tk.Label(crear_ventana, text="Edad").pack()
     entry_edad = tk.Entry(crear_ventana)
@@ -68,7 +77,10 @@ def leer_registros():
 
     for registro in registros:
         tk.Label(leer_ventana, text=f"Nombre: {registro['nombre']}, "
-                                    f"Edad: {registro['edad']}, Sexo: {registro['sexo']}").pack()
+                                    f"Apellido: {registro["apellido"]},"
+                                    f"Edad: {registro['edad']}, "
+                                    f"Sexo: {registro['sexo']}"
+                 ).pack()
 
     pass
 
@@ -76,7 +88,9 @@ def leer_registros():
 def actualizar_registro():
     def guardar_cambios():
         query = {"nombre": entry_nombre_actual.get()}
-        nuevos_datos = {"$set": {"nombre": entry_nombre_nuevo.get(), "edad": entry_edad_nueva.get(),
+        nuevos_datos = {"$set": {"nombre": entry_nombre_nuevo.get(),
+                                 "apellido": entry_apellido_nuevo.get(),
+                                 "edad": entry_edad_nueva.get(),
                                  "sexo": entry_sexo_nuevo.get()}}
 
         # Usar una transacción para actualizar los datos
@@ -97,6 +111,10 @@ def actualizar_registro():
     tk.Label(actualizar_ventana, text="Nuevo Nombre").pack()
     entry_nombre_nuevo = tk.Entry(actualizar_ventana)
     entry_nombre_nuevo.pack()
+
+    tk.Label(actualizar_ventana, text="Nuevo Apellido").pack()
+    entry_apellido_nuevo = tk.Entry(actualizar_ventana)
+    entry_apellido_nuevo.pack()
 
     tk.Label(actualizar_ventana, text="Nueva Edad").pack()
     entry_edad_nueva = tk.Entry(actualizar_ventana)
