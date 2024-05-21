@@ -1,6 +1,6 @@
 #Cometar el apartado de seguridad del .cfg
 #Descomentar el apartado de Replica Set
-#Para ejecutar el codigo es necesario tener al menos un nodo Replica Set activo
+#Para ejecutar el codigo es necesario tener al menos un nodo Replica Set activo.
 
 #Importamos Librerias
 import pymongo
