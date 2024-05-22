@@ -65,6 +65,7 @@ def crear_registro():
         correo = entry_correo.get().strip()
         telefono = entry_telefono.get().strip()
 
+        #Validación de campos vacíos
         if not entry.get():
             bloqueador = tk.Toplevel(root)
             bloqueador.withdraw()
@@ -107,9 +108,11 @@ def crear_registro():
 
     entry_nombre, entry_apellido, entry_edad, entry_sexo, entry_correo, entry_telefono = entradas
 
+    #Declaración de las funciones para validar
     vcmd = root.register(solo_letras)
     vcmd2 = root.register(solo_numeros)
     
+    #Referencia de las funciones de validación hacia cada campo, así como eliminación de caracteres no permitidos
     entry_nombre.config(validate="key", validatecommand=(vcmd, '%S'))
     entry_apellido.config(validate="key", validatecommand=(vcmd, '%S'))
     entry_sexo.config(validate="key", validatecommand=(vcmd, '%S'))
@@ -117,6 +120,7 @@ def crear_registro():
     entry_telefono.config(validate="key", validatecommand=(vcmd2, '%S'))
 
 
+    #Referencia y asignación de la función de guardar datos al botón de guardar 
     btn_guardar = tk.Button(crear_ventana, text="Guardar", command=guardar_datos)
     btn_guardar.pack()
 
