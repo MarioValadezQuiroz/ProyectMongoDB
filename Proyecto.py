@@ -6,6 +6,7 @@
 import pymongo
 import tkinter as tk
 from tkinter import messagebox
+import re
 
 # Conexión a la base de datos MongoDB
 client = pymongo.MongoClient("mongodb://localhost:27017/")
@@ -22,15 +23,40 @@ root = tk.Tk()
 root.title("Gestión de Datos")
 root.geometry("400x400")
 
+#Funciones validaciones
+def solo_letras(char):
+    global validacion_correcta
+    if char.isalpha() or char == " ":
+        validacion_correcta = True
+        return True
+    else:
+        messagebox.showerror("Error de entrada", "Sólo se permiten letras")
+        validacion_correcta = False
+        return True
+
+def solo_numeros(char):
+    global validacion_correcta
+    if char.isdigit() or char == " ":
+        validacion_correcta = True
+        return True
+    else:
+        messagebox.showerror("Error de entrada", "Sólo se permiten letras")
+        validacion_correcta = False
+        return True
+
 # Funciones CRUD
 def crear_registro():
     def guardar_datos():
-        nombre = entry_nombre.get()
-        apellido = entry_apellido.get()
-        edad = entry_edad.get()
-        sexo = entry_sexo.get()
-        correo = entry_correo.get()
-        telefono = entry_telefono.get()
+        nombre = entry_nombre.get().strip()
+        apellido = entry_apellido.get().strip()
+        edad = entry_edad.get().strip()
+        sexo = entry_sexo.get().strip()
+        correo = entry_correo.get().strip()
+        telefono = entry_telefono.get().strip()
+
+        if nombre == "" or apellido == "" or edad == "" or sexo == "" or correo == "" or telefono == "":
+            messagebox.showerror("Error", "Todos los campos son obligatorios")
+            return
 
         try:
             # Usar una transacción para guardar los datos
@@ -62,6 +88,16 @@ def crear_registro():
         entradas.append(entry)
 
     entry_nombre, entry_apellido, entry_edad, entry_sexo, entry_correo, entry_telefono = entradas
+
+    vcmd = root.register(solo_letras)
+    vcmd2 = root.register(solo_numeros)
+    
+    entry_nombre.config(validate="key", validatecommand=(vcmd, '%S'))
+    entry_apellido.config(validate="key", validatecommand=(vcmd, '%S'))
+    entry_sexo.config(validate="key", validatecommand=(vcmd, '%S'))
+    entry_edad.config(validate="key", validatecommand=(vcmd2, '%S'))
+    entry_telefono.config(validate="key", validatecommand=(vcmd2, '%S'))
+
 
     btn_guardar = tk.Button(crear_ventana, text="Guardar", command=guardar_datos)
     btn_guardar.pack()
