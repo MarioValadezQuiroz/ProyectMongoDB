@@ -6,7 +6,6 @@
 import pymongo
 import tkinter as tk
 from tkinter import messagebox
-import re
 
 # Conexión a la base de datos MongoDB
 client = pymongo.MongoClient("mongodb://localhost:27017/")
@@ -25,24 +24,36 @@ root.geometry("400x400")
 
 #Funciones validaciones
 def solo_letras(char):
-    global validacion_correcta
-    if char.isalpha() or char == " ":
-        validacion_correcta = True
+    if char.isalpha() or char == " ": #Verifica si existen letras o espacios
         return True
     else:
+        #Crear una ventana bloqueadora
+        bloqueador = tk.Toplevel(root)
+        bloqueador.withdraw()
+        bloqueador.grab_set()
+
         messagebox.showerror("Error de entrada", "Sólo se permiten letras")
-        validacion_correcta = False
+
+        #Liberar el bloqueo una vez se cierre el messagebox
+        bloqueador.grab_release()
+        bloqueador.destroy()
         return False
 
 def solo_numeros(char):
-    global validacion_correcta
-    if char.isdigit():
-        validacion_correcta = True
+    if char.isdigit() or char == " ": #Verifica si existen letras o espacios
         return True
     else:
+        #Crear una ventana bloqueadora
+        bloqueador = tk.Toplevel(root)
+        bloqueador.withdraw()
+        bloqueador.grab_set()
+
         messagebox.showerror("Error de entrada", "Sólo se permiten números")
-        validacion_correcta = False
-        return True
+
+        # Liberar el bloqueo una vez se cierre el messagebox
+        bloqueador.grab_release()
+        bloqueador.destroy()
+        return False
 
 # Funciones CRUD
 def crear_registro():
@@ -54,8 +65,13 @@ def crear_registro():
         correo = entry_correo.get().strip()
         telefono = entry_telefono.get().strip()
 
-        if nombre == "" or apellido == "" or edad == "" or sexo == "" or correo == "" or telefono == "":
-            messagebox.showerror("Error", "Todos los campos son obligatorios")
+        if not entry.get():
+            bloqueador = tk.Toplevel(root)
+            bloqueador.withdraw()
+            bloqueador.grab_set()
+            messagebox.showerror("Error de entrada", "Todos los campos son obligatorios")
+            bloqueador.grab_release()
+            bloqueador.destroy()
             return
 
         try:
@@ -77,6 +93,8 @@ def crear_registro():
     # Ventana para la entrada de datos
     crear_ventana = tk.Toplevel(root)
     crear_ventana.title("Crear Registro")
+    crear_ventana.transient(root)  # La ventana modal se muestra frente a la ventana principal
+    crear_ventana.grab_set() #La ventana no permite interacción con otras ventanas hasta que sea cerrada
 
     campos = ["Nombre", "Apellido", "Edad", "Sexo", "Correo", "Teléfono"]
     entradas = []
@@ -95,8 +113,8 @@ def crear_registro():
     entry_nombre.config(validate="key", validatecommand=(vcmd, '%S'))
     entry_apellido.config(validate="key", validatecommand=(vcmd, '%S'))
     entry_sexo.config(validate="key", validatecommand=(vcmd, '%S'))
-    entry_edad.config(validate="key", validatecommand=(vcmd2, '%P'))
-    entry_telefono.config(validate="key", validatecommand=(vcmd2, '%P'))
+    entry_edad.config(validate="key", validatecommand=(vcmd2, '%S'))
+    entry_telefono.config(validate="key", validatecommand=(vcmd2, '%S'))
 
 
     btn_guardar = tk.Button(crear_ventana, text="Guardar", command=guardar_datos)
@@ -106,6 +124,8 @@ def leer_registros():
     # Ventana para mostrar los registros
     leer_ventana = tk.Toplevel(root)
     leer_ventana.title("Leer Registros")
+    leer_ventana.transient(root)  # La ventana modal se muestra frente a la ventana principal
+    leer_ventana.grab_set() #La ventana no permite interacción con otras ventanas hasta que sea cerrada
 
     registros = collection.find()
 
@@ -140,6 +160,8 @@ def actualizar_registro():
     # Ventana para la entrada de datos
     actualizar_ventana = tk.Toplevel(root)
     actualizar_ventana.title("Actualizar Registro")
+    actualizar_ventana.transient(root)  # La ventana modal se muestra frente a la ventana principal
+    actualizar_ventana.grab_set() #La ventana no permite interacción con otras ventanas hasta que sea cerrada
 
     campos = [("Nombre Actual", "Nuevo Nombre"),
               ("Nuevo Apellido", "Nueva Edad"),
@@ -179,6 +201,8 @@ def eliminar_registro():
     # Ventana para la entrada de datos
     eliminar_ventana = tk.Toplevel(root)
     eliminar_ventana.title("Eliminar Registro")
+    eliminar_ventana.transient(root)  # La ventana modal se muestra frente a la ventana principal
+    eliminar_ventana.grab_set() #La ventana no permite interacción con otras ventanas hasta que sea cerrada
 
     tk.Label(eliminar_ventana, text="Nombre").pack()
     entry_nombre = tk.Entry(eliminar_ventana)
