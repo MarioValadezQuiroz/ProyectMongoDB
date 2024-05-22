@@ -32,15 +32,15 @@ def solo_letras(char):
     else:
         messagebox.showerror("Error de entrada", "Sólo se permiten letras")
         validacion_correcta = False
-        return True
+        return False
 
 def solo_numeros(char):
     global validacion_correcta
-    if char.isdigit() or char == " ":
+    if char.isdigit():
         validacion_correcta = True
         return True
     else:
-        messagebox.showerror("Error de entrada", "Sólo se permiten letras")
+        messagebox.showerror("Error de entrada", "Sólo se permiten números")
         validacion_correcta = False
         return True
 
@@ -95,8 +95,8 @@ def crear_registro():
     entry_nombre.config(validate="key", validatecommand=(vcmd, '%S'))
     entry_apellido.config(validate="key", validatecommand=(vcmd, '%S'))
     entry_sexo.config(validate="key", validatecommand=(vcmd, '%S'))
-    entry_edad.config(validate="key", validatecommand=(vcmd2, '%S'))
-    entry_telefono.config(validate="key", validatecommand=(vcmd2, '%S'))
+    entry_edad.config(validate="key", validatecommand=(vcmd2, '%P'))
+    entry_telefono.config(validate="key", validatecommand=(vcmd2, '%P'))
 
 
     btn_guardar = tk.Button(crear_ventana, text="Guardar", command=guardar_datos)
